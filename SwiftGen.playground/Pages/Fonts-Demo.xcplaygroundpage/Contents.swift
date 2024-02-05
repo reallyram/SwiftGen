@@ -15,7 +15,7 @@
 
 #if os(macOS)
   import AppKit.NSFont
-#elseif os(iOS) || os(tvOS) || os(watchOS)
+#elseif os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
   import UIKit.UIFont
 #endif
 

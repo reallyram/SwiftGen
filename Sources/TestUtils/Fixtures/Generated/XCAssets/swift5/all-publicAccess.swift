@@ -113,11 +113,11 @@ public final class ColorAsset {
 
   #if os(macOS)
   public typealias Color = NSColor
-  #elseif os(iOS) || os(tvOS) || os(watchOS)
+  #elseif os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
   public typealias Color = UIColor
   #endif
 
-  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
+  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, visionOS 1.0, *)
   public private(set) lazy var color: Color = {
     guard let color = Color(asset: self) else {
       fatalError("Unable to load color asset named \(name).")
@@ -125,8 +125,8 @@ public final class ColorAsset {
     return color
   }()
 
-  #if os(iOS) || os(tvOS)
-  @available(iOS 11.0, tvOS 11.0, *)
+  #if os(iOS) || os(tvOS) || os(visionOS)
+  @available(iOS 11.0, tvOS 11.0, visionOS 1.0, *)
   public func color(compatibleWith traitCollection: UITraitCollection) -> Color {
     let bundle = BundleToken.bundle
     guard let color = Color(named: name, in: bundle, compatibleWith: traitCollection) else {
@@ -149,10 +149,10 @@ public final class ColorAsset {
 }
 
 public extension ColorAsset.Color {
-  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
+  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, visionOS 1.0, *)
   convenience init?(asset: ColorAsset) {
     let bundle = BundleToken.bundle
-    #if os(iOS) || os(tvOS)
+    #if os(iOS) || os(tvOS) || os(visionOS)
     self.init(named: asset.name, in: bundle, compatibleWith: nil)
     #elseif os(macOS)
     self.init(named: NSColor.Name(asset.name), bundle: bundle)
@@ -188,7 +188,7 @@ public struct DataAsset {
 public extension NSDataAsset {
   convenience init?(asset: DataAsset) {
     let bundle = BundleToken.bundle
-    #if os(iOS) || os(tvOS) || os(watchOS)
+    #if os(iOS) || os(tvOS) || os(visionOS) || os(watchOS)
     self.init(name: asset.name, bundle: bundle)
     #elseif os(macOS)
     self.init(name: NSDataAsset.Name(asset.name), bundle: bundle)
@@ -201,14 +201,14 @@ public struct ImageAsset {
 
   #if os(macOS)
   public typealias Image = NSImage
-  #elseif os(iOS) || os(tvOS) || os(watchOS)
+  #elseif os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
   public typealias Image = UIImage
   #endif
 
   @available(iOS 8.0, tvOS 9.0, watchOS 2.0, macOS 10.7, *)
   public var image: Image {
     let bundle = BundleToken.bundle
-    #if os(iOS) || os(tvOS)
+    #if os(iOS) || os(tvOS) || os(visionOS)
     let image = Image(named: name, in: bundle, compatibleWith: nil)
     #elseif os(macOS)
     let name = NSImage.Name(self.name)
@@ -222,7 +222,7 @@ public struct ImageAsset {
     return result
   }
 
-  #if os(iOS) || os(tvOS)
+  #if os(iOS) || os(tvOS) || os(visionOS)
   @available(iOS 8.0, tvOS 9.0, *)
   public func image(compatibleWith traitCollection: UITraitCollection) -> Image {
     let bundle = BundleToken.bundle
@@ -246,7 +246,7 @@ public extension ImageAsset.Image {
   @available(macOS, deprecated,
     message: "This initializer is unsafe on macOS, please use the ImageAsset.image property")
   convenience init?(asset: ImageAsset) {
-    #if os(iOS) || os(tvOS)
+    #if os(iOS) || os(tvOS) || os(visionOS)
     let bundle = BundleToken.bundle
     self.init(named: asset.name, in: bundle, compatibleWith: nil)
     #elseif os(macOS)
@@ -280,7 +280,7 @@ public extension SwiftUI.Image {
 public struct SymbolAsset {
   public fileprivate(set) var name: String
 
-  #if os(iOS) || os(tvOS) || os(watchOS)
+  #if os(iOS) || os(tvOS) || os(visionOS) || os(watchOS)
   @available(iOS 13.0, tvOS 13.0, watchOS 6.0, *)
   public typealias Configuration = UIImage.SymbolConfiguration
   public typealias Image = UIImage
@@ -288,7 +288,7 @@ public struct SymbolAsset {
   @available(iOS 12.0, tvOS 12.0, watchOS 5.0, *)
   public var image: Image {
     let bundle = BundleToken.bundle
-    #if os(iOS) || os(tvOS)
+    #if os(iOS) || os(tvOS) || os(visionOS)
     let image = Image(named: name, in: bundle, compatibleWith: nil)
     #elseif os(watchOS)
     let image = Image(named: name)
